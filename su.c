@@ -358,8 +358,8 @@ static __attribute__ ((noreturn)) void allow(struct su_context *ctx)
     int argc, err;
 
     umask(ctx->umask);
-    send_intent(ctx, ALLOW, ACTION_RESULT);
-
+    if (!(ctx->from.uid == AID_ROOT || ctx->from.uid == AID_SHELL))
+        send_intent(ctx, ALLOW, ACTION_RESULT);
     arg0 = strrchr (ctx->to.shell, '/');
     arg0 = (arg0) ? arg0 + 1 : ctx->to.shell;
     if (ctx->to.login) {
